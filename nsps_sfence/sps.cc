@@ -9,12 +9,13 @@
 #include <vector>
 #include <map>
 #include <stdint.h>
+#include <string>
 
 #include "defines.h"
 
 using namespace std;
 
-typedef pair <int, int> Int_Pair;
+typedef pair <int, string> Int_Pair;
 double timer_begin,timer_end,sum;
 double GetWallTime(void)
 {
@@ -41,23 +42,25 @@ static inline void asm_sfence(void)
 struct a1
 {
     int src;
-    int b[3];
+    string b[3];
 };
 typedef struct a1 pmem;
+
 int build_array(vector<pmem>& a, int n)
 {
-  int i;
-    
-  srand(time(NULL));  
-     
-  for (i = 0; i < n; i++)
-  {
-      a[i].src=0;
-    a[i].b[0] = rand()%100;
-    a[i].b[2]=a[i].b[0];
-  }
-  
-  return 0;
+    int i,j;
+    char ch[256]={};
+    srand(time(NULL));
+    for (i = 0; i < n; i++)
+    {
+        for (j=0;j<255;j++)
+            ch[j]='a'+rand()%26;
+        a[i].src=0;
+        a[i].b[0]=ch;
+        a[i].b[2]=a[i].b[0];
+        //cout<<a[i].b[0]<<endl;
+    }
+    return 0;
 }
 
 
@@ -105,9 +108,15 @@ void array_swap(vector<pmem>& a, int n, int i)
 
 
   asm_clflush((intptr_t *)&a[k1].src);
-  asm_clflush((intptr_t *)&a[k1].b[a[k1].src]);
+  asm_clflush((intptr_t *)&a[k1].b[a[k1].src][0]);
+  asm_clflush((intptr_t *)(&a[k1].b[a[k1].src][0]+64));
+  asm_clflush((intptr_t *)(&a[k1].b[a[k1].src][0]+128));
+  asm_clflush((intptr_t *)(&a[k1].b[a[k1].src][0]+192));
   asm_clflush((intptr_t *)&a[k2].src);
-  asm_clflush((intptr_t *)&a[k2].b[a[k2].src]);
+  asm_clflush((intptr_t *)(&a[k2].b[a[k2].src][0]));
+  asm_clflush((intptr_t *)(&a[k2].b[a[k2].src][0]+64));
+  asm_clflush((intptr_t *)(&a[k2].b[a[k2].src][0]+128));
+  asm_clflush((intptr_t *)(&a[k2].b[a[k2].src][0]+192));
   asm_sfence();
 }
 
@@ -165,7 +174,7 @@ int main(int argc, char **argv)
   orig.open("orig.debug");
   print_array(array, item_count, orig);
 #endif
-  ofstream output("result.txt");
+  //ofstream output("result.txt");
   sum=0;
   for (int k=1;k<=200;k++)
   {

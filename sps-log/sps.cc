@@ -8,12 +8,12 @@
 #include <fstream>
 #include <vector>
 #include <map>
-
+#include <string>
 #include "defines.h"
 
 using namespace std;
 
-typedef pair <int, int> Int_Pair;
+typedef pair <int, string> Int_Pair;
 double timer_begin,timer_end,sum;
 double GetWallTime(void)
 {
@@ -29,26 +29,33 @@ double GetWallTime(void)
     gettimeofday(&tp, NULL);
     return( ((double) (tp.tv_sec - start)) + (tp.tv_usec-startu)/1000000.0 );
 }
-int build_array(vector<int>& a, int n)
+int build_array(vector<string>& a, int n)
 {
-  int i;
-    
-  srand(time(NULL));  
-     
-  for (i = 0; i < n; i++)
-    a[i] = rand();
-  
-  return 0;
+    int i,j;
+    char ch[256]={};
+    //ch[21]='\0';
+    srand(time(NULL));
+    //memset(c);
+    for (i = 0; i < n; i++)
+    {
+        for (j=0;j<255;j++)
+            ch[j]='a'+rand()%26;
+        a[i]=ch;
+        //cout<<a[i]<<endl;
+        //cout<<"****************"<<endl;
+    }
+    return 0;
 }
 
-void array_swap(vector<int>& a, map<int, int>& undolog, map<int, int>& redolog, int n, int i)
+void array_swap(vector<string>& a, map<int, string>& undolog, map<int, string>& redolog, int n, int i)
 {
   //mcsim_skip_instrs_begin();
-  int temp, k1, k2;
+  int  k1, k2;
+  string temp;
 
   srand(time(NULL)+i*i);
-  k1 = rand() % n;    
-  k2 = rand() % n;     
+  k1 = rand() % n;
+  k2 = rand() % n;
 
   //cout << "swaps a[" << k1 << "] and a[" << k2 << "]" << endl;  
   //mcsim_skip_instrs_end();
@@ -65,11 +72,11 @@ void array_swap(vector<int>& a, map<int, int>& undolog, map<int, int>& redolog, 
   
   temp  = a[k1];
   a[k1] = a[k2];
-  a[k2] = temp;   
+  a[k2] = temp;
   
 }
 
-void print_array(vector<int>& a, int n, ofstream& file)
+void print_array(vector<string>& a, int n, ofstream& file)
 {
   int i;
 
@@ -83,7 +90,7 @@ int main(int argc, char **argv)
   if (argc == 1) {
     printf("\n=========== An Array Usage ============\n");
     printf("Build an array with random integers, randomly swaps between entries\n");
-    printf("./sps --count <item_count> --swaps <num of swaps>\n");    
+    printf("./sps --count <item_count> --swaps <num of swaps>\n");
     printf("<item_count>, default 10^6\n\n");
     return 0;
   }
@@ -92,9 +99,9 @@ int main(int argc, char **argv)
   int item_count = ITEM_COUNT, swaps = 0;
 
   for (i = 1; i < argc; i++) {
-    if (strncmp(argv[i], "--count", 7) == 0) {      
+    if (strncmp(argv[i], "--count", 7) == 0) {
       item_count = atoi(argv[i+1]);
-      ++i;      
+      ++i;
     } else if (strncmp(argv[i], "--swaps", 7) == 0) {
       swaps = atoi(argv[i+1]);
       ++i;
@@ -102,18 +109,18 @@ int main(int argc, char **argv)
       printf("Invalid parameters: '%s'\n", argv[i]);
       return -1;
     }
-  }   
-  
-  vector<int> array(item_count);
-  map<int, int> undolog, redolog;
+  }
+
+  vector<string> array(item_count);
+  map<int, string> undolog, redolog;
 
   // Initialization: build an array with random intergers
   if (build_array(array, item_count)) {
     cerr << "Fails to build an array" << endl;
     return -1;
   }
-  
-  //mcsim_skip_instrs_end(); 
+
+  //mcsim_skip_instrs_end();
 
 #ifdef SPS_DEBUG
   ofstream orig;

@@ -8,12 +8,13 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <string>
 
 #include "defines.h"
 
 using namespace std;
 
-typedef pair <int, int> Int_Pair;
+typedef pair <int, string> Int_Pair;
 double timer_begin,timer_end,sum;
 double GetWallTime(void)
 {
@@ -33,25 +34,42 @@ double GetWallTime(void)
 struct a1
 {
     int src;
-    int b[3];
+    string b[3];
 };
 typedef struct a1 pmem;
+// int build_array(vector<string>& a, int n)
+// {
+//     int i,j;
+//     char ch[256]={};
+//     //ch[21]='\0';
+//     srand(time(NULL));
+//     //memset(c);
+//     for (i = 0; i < n; i++)
+//         {
+//             for (j=0;j<256;j++)
+//                 ch[j]='a'+rand()%26;
+//             a[i]=ch;
+//             //cout<<a[i]<<endl;
+//             //cout<<"****************"<<endl;
+//         }
+//     return 0;
+// }
 int build_array(vector<pmem>& a, int n)
 {
-  int i;
-    
-  srand(time(NULL));  
-     
-  for (i = 0; i < n; i++)
-  {
-      a[i].src=0;
-    a[i].b[0] = rand()%100;
-    a[i].b[2]=a[i].b[0];
-  }
-  
-  return 0;
+    int i,j;
+    char ch[256]={};
+    srand(time(NULL));
+    for (i = 0; i < n; i++)
+    {
+        for (j=0;j<255;j++)
+            ch[j]='a'+rand()%26;
+        a[i].src=0;
+        a[i].b[0]=ch;
+        a[i].b[2]=a[i].b[0];
+        //cout<<a[i].b[0]<<endl;
+    }
+    return 0;
 }
-
 
 void array_swap(vector<pmem>& a, int n, int i)
 {
@@ -94,7 +112,7 @@ void array_swap(vector<pmem>& a, int n, int i)
   a[k2].src++;
   a[k1].src%=3;
   a[k2].src%=3;
-  
+
 }
 
 void print_array(vector<pmem>& a, int n, ofstream& file)
@@ -122,19 +140,25 @@ int main(int argc, char **argv)
   int i;
   int item_count = ITEM_COUNT, swaps = 0;
 
-  for (i = 1; i < argc; i++) {
-    if (strncmp(argv[i], "--count", 7) == 0) {      
-      item_count = atoi(argv[i+1]);
-      ++i;      
-    } else if (strncmp(argv[i], "--swaps", 7) == 0) {
-      swaps = atoi(argv[i+1]);
-      ++i;
-    } else {
-      printf("Invalid parameters: '%s'\n", argv[i]);
-      return -1;
-    }
-  }   
-  
+  for (i = 1; i < argc; i++)
+  {
+      if (strncmp(argv[i], "--count", 7) == 0)
+      {
+          item_count = atoi(argv[i+1]);
+          ++i;
+      }
+      else if (strncmp(argv[i], "--swaps", 7) == 0)
+      {
+          swaps = atoi(argv[i+1]);
+          ++i;
+      }
+      else
+      {
+          printf("Invalid parameters: '%s'\n", argv[i]);
+          return -1;
+      }
+  }
+
   vector<pmem> array(item_count);
   //map<int, int> undolog, redolog;
 
@@ -151,7 +175,7 @@ int main(int argc, char **argv)
   orig.open("orig.debug");
   print_array(array, item_count, orig);
 #endif
-  ofstream output("result.txt");
+  //ofstream output("result.txt");
   sum=0;
   for (int k=1;k<=200;k++)
   {
