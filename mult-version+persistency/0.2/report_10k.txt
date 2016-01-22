@@ -1,0 +1,36 @@
+# started on Wed Dec  9 14:14:14 2015
+
+
+ Performance counter stats for './sps --count 100000 --swaps 10000':
+
+    17,025,057,038      cpu-cycles                [14.52%]
+    64,236,768,276      instructions              #    3.77  insns per cycle         [18.23%]
+         8,774,191      cache-references                                             [18.38%]
+           401,305      cache-misses              #    4.574 % of all cache refs     [18.53%]
+    13,069,264,757      branch-instructions                                          [18.59%]
+         3,573,821      branch-misses             #    0.03% of all branches         [18.55%]
+       440,031,595      bus-cycles                                                   [14.81%]
+    15,867,563,808      ref-cycles                                                   [18.48%]
+    14,072,403,044      L1-dcache-loads                                              [18.45%]
+        10,763,120      L1-dcache-load-misses     #    0.08% of all L1-dcache hits   [18.42%]
+     3,736,890,978      L1-dcache-stores                                             [18.39%]
+         7,267,484      L1-dcache-store-misses                                       [18.29%]
+                 0      L1-dcache-prefetch-misses                                    [14.51%]
+           173,773      L1-icache-load-misses                                        [14.41%]
+         9,256,299      LLC-loads                                                    [14.31%]
+         1,572,078      LLC-load-misses           #   16.98% of all LL-cache hits    [14.29%]
+           965,052      LLC-stores                                                   [ 7.21%]
+            70,007      LLC-store-misses                                             [ 7.12%]
+         1,041,471      LLC-prefetches                                               [ 7.09%]
+           920,681      LLC-prefetch-misses                                          [ 7.24%]
+    13,499,443,556      dTLB-loads                                                   [10.84%]
+         2,838,476      dTLB-load-misses          #    0.02% of all dTLB cache hits  [14.43%]
+     3,806,361,124      dTLB-stores                                                  [14.40%]
+            78,550      dTLB-store-misses                                            [14.38%]
+           233,779      iTLB-loads                                                   [14.35%]
+             6,820      iTLB-load-misses          #    2.92% of all iTLB cache hits  [14.33%]
+                 0      mem-loads                                                    [14.30%]
+     3,709,312,615      mem-stores                                                   [14.36%]
+
+       2.417404597 seconds time elapsed
+

@@ -1,0 +1,15 @@
+# started on Sun Dec  6 21:00:19 2015
+
+
+ Performance counter stats for './sps --count 100000 --swaps 10000':
+
+                 0      mem-loads                                                    [57.03%]
+     3,656,459,762      mem-stores                                                   [57.26%]
+         6,788,570      cache-misses                                                 [57.29%]
+        17,222,229      L1-dcache-load-misses                                        [57.32%]
+         9,200,847      L1-dcache-store-misses                                       [57.16%]
+         6,286,247      LLC-load-misses                                              [57.06%]
+            26,365      LLC-store-misses                                             [57.04%]
+
+       2.570349354 seconds time elapsed
+
